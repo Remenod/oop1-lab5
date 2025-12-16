@@ -1,4 +1,5 @@
 ﻿using System;
+using lab5.MyNumber;
 
 namespace lab5;
 
