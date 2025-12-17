@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace lab5.MyNumber;
 
-class MyFrac : IMyNumber<MyFrac>, IComparable<MyFrac>
+public class MyFrac : IMyNumber<MyFrac>, IComparable<MyFrac>
 {
     private BigInteger nom, denom;
 

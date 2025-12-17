@@ -2,7 +2,7 @@ using System;
 
 namespace lab5.MyNumber;
 
-class MyComplex : IMyNumber<MyComplex>
+public class MyComplex : IMyNumber<MyComplex>
 {
     double real, imag;
 
