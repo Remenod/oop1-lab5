@@ -3,10 +3,70 @@ using System.Numerics;
 
 namespace lab5.MyNumber;
 
-class MyFrac(BigInteger nom, BigInteger denom) : IMyNumber<MyFrac>
+class MyFrac : IMyNumber<MyFrac>
 {
-    public BigInteger Nom { get => nom; set => nom = value; } // implement later
-    public BigInteger Denom { get => denom; set => denom = value; } // implement later
+    private BigInteger nom, denom;
+
+    public BigInteger Nom { get => nom; set => nom = value; }
+    public BigInteger Denom
+    {
+        get => denom;
+        set => denom = value != 0
+            ? value
+            : throw new DivideByZeroException("Division by a zero divisor.");
+    }
+
+    public MyFrac(BigInteger nom, BigInteger denom)
+    {
+        if (denom == 0)
+            throw new DivideByZeroException("The denominator of a fraction cannot be equal to 0.");
+
+        if (denom < 0)
+        {
+            nom = -nom;
+            denom = -denom;
+        }
+
+        Nom = nom;
+        Denom = denom;
+    }
+
+    public MyFrac(BigInteger nom) : this(nom, 1) { }
+
+    public MyFrac(int nom, int denom) : this((BigInteger)nom, (BigInteger)denom) { }
+
+    public MyFrac(string str)
+    {
+        var parts = str.Split('/');
+        if (parts.Length != 2)
+            throw new ArgumentException("Invalid fraction format. Expecting ‘numerator/denominator’.");
+
+        try
+        {
+            BigInteger n = BigInteger.Parse(parts[0].Trim());
+            BigInteger d = BigInteger.Parse(parts[1].Trim());
+
+            if (d == 0) throw new DivideByZeroException();
+
+            if (d < 0) { n = -n; d = -d; }
+
+            Nom = n;
+            Denom = d;
+        }
+        catch (FormatException)
+        {
+            throw new ArgumentException("The string contains non-numeric characters.");
+        }
+        catch (DivideByZeroException)
+        {
+            throw new DivideByZeroException("The denominator in the row cannot be zero.");
+        }
+    }
+
+    public override string ToString()
+    {
+        return $"{Nom}/{Denom}";
+    }
 
     public MyFrac Add(MyFrac that)
     {
@@ -34,9 +94,12 @@ class MyFrac(BigInteger nom, BigInteger denom) : IMyNumber<MyFrac>
 
     public MyFrac Divide(MyFrac that)
     {
+        if (that.Nom == 0)
+            throw new DivideByZeroException("Division by a zero divisor.");
+
         return new MyFrac(
-            this.Nom * that.Denom,   // ad
-            this.Denom * that.Nom    // bc
+            this.Nom * that.Denom,
+            this.Denom * that.Nom
         );
     }
 
@@ -44,6 +107,4 @@ class MyFrac(BigInteger nom, BigInteger denom) : IMyNumber<MyFrac>
     public static MyFrac operator -(MyFrac a, MyFrac b) => a.Subtract(b);
     public static MyFrac operator *(MyFrac a, MyFrac b) => a.Multiply(b);
     public static MyFrac operator /(MyFrac a, MyFrac b) => a.Divide(b);
-
-
 }
