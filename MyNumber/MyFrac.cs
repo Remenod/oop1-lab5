@@ -27,8 +27,10 @@ class MyFrac : IMyNumber<MyFrac>
             denom = -denom;
         }
 
-        Nom = nom;
-        Denom = denom;
+        BigInteger gcd = BigInteger.GreatestCommonDivisor(nom, denom);
+
+        this.nom = nom / gcd;
+        this.denom = denom / gcd;
     }
 
     public MyFrac(BigInteger nom) : this(nom, 1) { }
@@ -50,8 +52,10 @@ class MyFrac : IMyNumber<MyFrac>
 
             if (d < 0) { n = -n; d = -d; }
 
-            Nom = n;
-            Denom = d;
+            BigInteger gcd = BigInteger.GreatestCommonDivisor(n, d);
+
+            Nom = n / gcd;
+            Denom = d / gcd;
         }
         catch (FormatException)
         {
