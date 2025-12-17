@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace lab5.MyNumber;
 
-class MyFrac : IMyNumber<MyFrac>
+class MyFrac : IMyNumber<MyFrac>, IComparable<MyFrac>
 {
     private BigInteger nom, denom;
 
@@ -70,6 +70,14 @@ class MyFrac : IMyNumber<MyFrac>
     public override string ToString()
     {
         return $"{Nom}/{Denom}";
+    }
+
+    public int CompareTo(MyFrac that)
+    {
+        // Compare a/b and c/d as (a*d) and (c*b)
+        BigInteger left = this.Nom * that.Denom;
+        BigInteger right = that.Nom * this.Denom;
+        return left.CompareTo(right);
     }
 
     public MyFrac Add(MyFrac that)
