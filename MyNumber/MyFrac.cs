@@ -8,21 +8,36 @@ class MyFrac(BigInteger nom, BigInteger denom) : IMyNumber<MyFrac>
     public BigInteger Nom { get => nom; set => nom = value; } // implement later
     public BigInteger Denom { get => denom; set => denom = value; } // implement later
 
-    public MyFrac Add(MyFrac b)
+    public MyFrac Add(MyFrac that)
     {
-        throw new NotImplementedException();
+        return new MyFrac(
+            this.Nom * that.Denom + this.Denom * that.Nom, // ad + bc
+            this.Denom * that.Denom                        // bd
+        );
     }
-    public MyFrac Subtract(MyFrac b)
+
+    public MyFrac Subtract(MyFrac that)
     {
-        throw new NotImplementedException();
+        return new MyFrac(
+            this.Nom * that.Denom - this.Denom * that.Nom, // ad - bc
+            this.Denom * that.Denom                        // bd
+        );
     }
-    public MyFrac Multiply(MyFrac b)
+
+    public MyFrac Multiply(MyFrac that)
     {
-        throw new NotImplementedException();
+        return new MyFrac(
+            this.Nom * that.Nom,     // ac
+            this.Denom * that.Denom  // bd
+        );
     }
-    public MyFrac Divide(MyFrac b)
+
+    public MyFrac Divide(MyFrac that)
     {
-        throw new NotImplementedException();
+        return new MyFrac(
+            this.Nom * that.Denom,   // ad
+            this.Denom * that.Nom    // bc
+        );
     }
 
     public static MyFrac operator +(MyFrac a, MyFrac b) => a.Add(b);

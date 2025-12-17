@@ -2,26 +2,37 @@ using System;
 
 namespace lab5.MyNumber;
 
-class MyComplex(double real, double imagine) : IMyNumber<MyComplex>
+class MyComplex(double real, double imag) : IMyNumber<MyComplex>
 {
     public double Real { get => real; set => real = value; } // implement later
-    public double Imagine { get => imagine; set => imagine = value; } // implement later
+    public double Imag { get => imag; set => imag = value; } // implement later
 
-    public MyComplex Add(MyComplex b)
+    public MyComplex Add(MyComplex that)
     {
-        throw new NotImplementedException();
+        return new MyComplex(this.Real + that.Real, this.Imag + that.Imag);
     }
-    public MyComplex Subtract(MyComplex b)
+
+    public MyComplex Subtract(MyComplex that)
     {
-        throw new NotImplementedException();
+        return new MyComplex(this.Real - that.Real, this.Imag - that.Imag);
     }
-    public MyComplex Multiply(MyComplex b)
+
+    public MyComplex Multiply(MyComplex that)
     {
-        throw new NotImplementedException();
+        return new MyComplex(
+            this.Real * that.Real - this.Imag * that.Imag, // (ac - bd)
+            this.Real * that.Imag + this.Imag * that.Real  // (ad + bc)
+        );
     }
-    public MyComplex Divide(MyComplex b)
+
+    public MyComplex Divide(MyComplex that)
     {
-        throw new NotImplementedException();
+        double denominator = that.Real * that.Real + that.Imag * that.Imag; // c^2 + d^2
+
+        return new MyComplex(
+            (this.Real * that.Real + this.Imag * that.Imag) / denominator, // (ac + bd) / ...
+            (this.Imag * that.Real - this.Real * that.Imag) / denominator  // (bc - ad) / ...
+        );
     }
 
     public static MyComplex operator +(MyComplex a, MyComplex b) => a.Add(b);
